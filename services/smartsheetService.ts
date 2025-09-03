@@ -9,16 +9,16 @@ async function apiFetch<T>(endpoint: string, apiKey: string): Promise<T> {
     'Content-Type': 'application/json'
   };
 
-  // Vercel/production environments often have their IP ranges blocked by APIs when using
-  // common public CORS proxies, leading to errors like Smartsheet's 4000.
-  // We are switching to a more modern proxy that is less likely to be blocked.
+  // Vercel/production environments can face CORS issues. "Failed to fetch" often means
+  // the browser is blocking the request due to a failed CORS preflight. Public proxies
+  // can be unreliable. We are switching to another service that is generally more stable.
   // NOTE: For a truly robust production application, the best practice is to create your
   // own serverless function on Vercel to act as a dedicated, secure proxy.
-  const proxyUrl = 'https://corsproxy.io/?';
+  const proxyUrl = 'https://thingproxy.freeboard.io/fetch/'; 
   const targetUrl = `${API_BASE_URL}${endpoint}`;
 
 
-  const response = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}`, { headers });
+  const response = await fetch(`${proxyUrl}${targetUrl}`, { headers });
 
   if (!response.ok) {
     let errorMessage = `API Error: ${response.status} ${response.statusText}`;

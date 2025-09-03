@@ -1,0 +1,5 @@
+{
+  "name": "Smartsheet Workspace Auditor",
+  "description": "An application to fetch, display, and export Smartsheet workspace sharing information. Enter your Smartsheet API key to view a detailed breakdown of workspace owners, members, and their permissions.",
+  "requestFramePermissions": []
+}

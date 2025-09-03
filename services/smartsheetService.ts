@@ -1,8 +1,8 @@
-import { Workspace, Share, PaginatedResponse, ProcessedWorkspaceData } from '../types';
+import { Workspace, Share, PaginatedResponse, ProcessedWorkspaceData, MemberShare, AccessLevel } from '../types';
 
 const API_BASE_URL = 'https://api.smartsheet.com/2.0';
 
-async function apiFetch<T,>(endpoint: string, apiKey: string): Promise<T> {
+async function apiFetch<T>(endpoint: string, apiKey: string): Promise<T> {
   const headers = {
     'Authorization': `Bearer ${apiKey}`,
     'Content-Type': 'application/json'
@@ -36,11 +36,9 @@ async function listWorkspaces(apiKey: string): Promise<Workspace[]> {
   return response.data;
 }
 
-async function getWorkspaceDetails(workspaceId: number, apiKey: string): Promise<Workspace> {
-  const workspace = await apiFetch<Workspace>(`/workspaces/${workspaceId}`, apiKey);
-  return workspace;
+async function getWorkspaceDetails(workspaceId: number, apiKey:string): Promise<Workspace> {
+    return apiFetch<Workspace>(`/workspaces/${workspaceId}`, apiKey);
 }
-
 
 async function getWorkspaceShares(workspaceId: number, apiKey: string): Promise<Share[]> {
   const response = await apiFetch<PaginatedResponse<Share>>(`/workspaces/${workspaceId}/shares`, apiKey);
@@ -59,16 +57,17 @@ export async function fetchAndProcessWorkspaces(apiKey: string): Promise<Process
     ]);
     
     let owner = 'N/A';
-    const members: string[] = [];
-    const permissions: string[] = [];
+    const memberShares: MemberShare[] = [];
 
     shares.forEach(share => {
       const identity = share.email || share.name || 'Group/Unknown';
       if (share.accessLevel === 'OWNER') {
         owner = identity;
       } else {
-        members.push(identity);
-        permissions.push(share.accessLevel);
+        memberShares.push({
+            identity,
+            accessLevel: share.accessLevel
+        });
       }
     });
 
@@ -77,8 +76,7 @@ export async function fetchAndProcessWorkspaces(apiKey: string): Promise<Process
       workspaceName: workspaceDetails.name,
       owner,
       createdAt: workspaceDetails.createdAt,
-      members,
-      permissions
+      shares: memberShares
     };
   });
 

@@ -1,9 +1,10 @@
-
 export interface Workspace {
   id: number;
   name: string;
   createdAt: string;
 }
+
+export type AccessLevel = 'OWNER' | 'ADMIN' | 'EDITOR' | 'COMMENTER' | 'VIEWER';
 
 export interface Share {
   id: string;
@@ -11,7 +12,7 @@ export interface Share {
   scope: string;
   email?: string;
   name?: string;
-  accessLevel: 'OWNER' | 'ADMIN' | 'EDITOR' | 'COMMENTER' | 'VIEWER';
+  accessLevel: AccessLevel;
   createdAt: string;
   modifiedAt: string;
 }
@@ -24,11 +25,15 @@ export interface PaginatedResponse<T> {
   data: T[];
 }
 
+export interface MemberShare {
+  identity: string;
+  accessLevel: AccessLevel;
+}
+
 export interface ProcessedWorkspaceData {
   id: number;
   workspaceName: string;
   owner: string;
   createdAt: string;
-  members: string[];
-  permissions: string[];
+  shares: MemberShare[];
 }

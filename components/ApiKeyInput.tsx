@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ApiKeyInputProps {
@@ -29,14 +28,14 @@ const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ apiKey, setApiKey, onFetch, i
           onChange={(e) => setApiKey(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter your Smartsheet API Key"
-          className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+          className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition duration-200"
           disabled={isLoading}
         />
       </div>
       <button
         onClick={onFetch}
         disabled={isLoading || !apiKey}
-        className="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 transition-all duration-200"
+        className="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gold-600 hover:bg-gold-700 disabled:bg-gray-500 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gold-500 transition-all duration-200"
       >
         {isLoading ? (
           <>

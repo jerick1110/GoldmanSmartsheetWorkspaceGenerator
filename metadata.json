@@ -1,5 +1,5 @@
 {
-  "name": "Smartsheet Workspace Auditor",
-  "description": "An application to fetch, display, and export Smartsheet workspace sharing information. Enter your Smartsheet API key to view a detailed breakdown of workspace owners, members, and their permissions.",
+  "name": "Goldman Smartsheet Workspace Library",
+  "description": "An efficient application to audit and analyze Smartsheet workspace sharing. Enter a Smartsheet API key to view a detailed, sortable report of workspace owners, members, and their permissions, complete with summary dashboards and an enhanced CSV export.",
   "requestFramePermissions": []
 }

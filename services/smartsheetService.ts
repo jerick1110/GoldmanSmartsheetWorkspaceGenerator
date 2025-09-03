@@ -1,3 +1,4 @@
+
 import { Workspace, Share, PaginatedResponse, ProcessedWorkspaceData, MemberShare, AccessLevel } from '../types';
 
 const API_BASE_URL = 'https://api.smartsheet.com/2.0';
@@ -8,19 +9,22 @@ async function apiFetch<T>(endpoint: string, apiKey: string): Promise<T> {
     'Content-Type': 'application/json'
   };
 
-  // Using a proxy to bypass browser CORS restrictions. Public proxies can be unreliable
-  // and are a common source of network errors (like 'Failed to fetch').
-  // In a real production app, a dedicated server-side proxy is the recommended approach.
-  const proxyUrl = 'https://cors.eu.org/';
-  const targetUrl = `${API_BASE_URL}${endpoint}`.replace(/^https?:\/\//, '');
+  // Vercel/production environments often have their IP ranges blocked by APIs when using
+  // common public CORS proxies, leading to errors like Smartsheet's 4000.
+  // We are switching to a more modern proxy that is less likely to be blocked.
+  // NOTE: For a truly robust production application, the best practice is to create your
+  // own serverless function on Vercel to act as a dedicated, secure proxy.
+  const proxyUrl = 'https://corsproxy.io/?';
+  const targetUrl = `${API_BASE_URL}${endpoint}`;
 
 
-  const response = await fetch(`${proxyUrl}${targetUrl}`, { headers });
+  const response = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}`, { headers });
 
   if (!response.ok) {
     let errorMessage = `API Error: ${response.status} ${response.statusText}`;
     try {
       const errorBody = await response.json();
+      // Smartsheet error code 4000 can often indicate a proxy/network issue.
       errorMessage = `API Error: ${errorBody.message || errorMessage} (Code: ${errorBody.errorCode})`;
     } catch (e) {
       // Ignore if error body is not JSON

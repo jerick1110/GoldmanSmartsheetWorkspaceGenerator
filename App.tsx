@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { ProcessedWorkspaceData } from './types';
 import { fetchAndProcessWorkspaces } from './services/smartsheetService';
@@ -15,7 +16,7 @@ const App: React.FC = () => {
 
   const handleFetchData = useCallback(async () => {
     if (!apiKey) {
-      setError('Please enter a Smartsheet API key.');
+      setError('Validation Error: Please enter a Smartsheet API key.');
       return;
     }
     setIsLoading(true);
@@ -29,7 +30,7 @@ const App: React.FC = () => {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('An unknown error occurred.');
+        setError('Unexpected Error: An unknown error occurred.');
       }
     } finally {
       setIsLoading(false);
@@ -65,7 +66,7 @@ const App: React.FC = () => {
           {!isLoading && !error && data.length === 0 && (
              <div className="text-center py-16 px-6 bg-gray-800/50 border border-dashed border-gray-700 rounded-xl">
                 <svg className="mx-auto h-12 w-12 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    <path vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v8a2 2 0 01-2-2H5a2 2 0 01-2-2z" />
                 </svg>
                 <h3 className="mt-2 text-sm font-semibold text-white">No data to display</h3>
                 <p className="mt-1 text-sm text-gray-400">Enter your API key and click "Fetch Data" to get started.</p>
